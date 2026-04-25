@@ -6,3 +6,4 @@ redis
 django-celery-results
 django-cors-headers
 gunicorn
+whitenoise
