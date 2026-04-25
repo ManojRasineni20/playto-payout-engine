@@ -55,14 +55,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-import os
 import dj_database_url
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 if DATABASE_URL:
     DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL)
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=False
+        )
     }
 else:
     DATABASES = {
@@ -70,12 +73,11 @@ else:
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'playto_db',
             'USER': 'postgres',
-            'PASSWORD': os.environ.get('PGPASSWORD', 'your_local_password'),
+            'PASSWORD': os.environ.get('PGPASSWORD', '8188'),
             'HOST': 'localhost',
             'PORT': '5432',
         }
     }
-
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
